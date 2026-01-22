@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
-import { AuthenticationController } from './authentication.controller';
 
 @Module({
   imports: [
-    // Connessione DB
+    // Mongo connection via Docker
     MongooseModule.forRoot('mongodb://localhost:27017/challenge'),
-    // Modulo Users
+    // Import
     UsersModule,
   ],
-  controllers: [AuthenticationController], // Registriamo qui il controller
+  controllers: [],
   providers: [],
 })
 export class AppModule {}

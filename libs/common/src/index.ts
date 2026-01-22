@@ -1,2 +1,2 @@
-export * from './common.module';
-export * from './common.service';
+// libs/common/src/index.ts
+export * from './dto/create-user.dto';
