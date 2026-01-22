@@ -6,7 +6,7 @@ import { UsersModule } from './users/users.module';
   imports: [
     // Mongo connection via Docker
     MongooseModule.forRoot('mongodb://localhost:27017/challenge'),
-    // Import
+    // Import users module
     UsersModule,
   ],
   controllers: [],
