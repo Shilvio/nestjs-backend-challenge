@@ -1,8 +1,10 @@
 import { NestFactory } from '@nestjs/core';
-import { GatewayModule } from './gateway.module';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(GatewayModule);
-  await app.listen(process.env.port ?? 3000);
+  const app = await NestFactory.create(AppModule);
+
+  await app.listen(3000);
+  console.log('Gateway is listening on HTTP port 3000');
 }
 bootstrap();

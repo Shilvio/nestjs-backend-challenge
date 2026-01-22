@@ -1,14 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/nestjs-backend-challenge/src",
+  "sourceRoot": "apps/gateway/src",
   "compilerOptions": {
     "deleteOutDir": true,
     "webpack": true,
-    "tsConfigPath": "apps/nestjs-backend-challenge/tsconfig.app.json"
+    "tsConfigPath": "apps/gateway/tsconfig.app.json"
   },
   "monorepo": true,
-  "root": "apps/nestjs-backend-challenge",
+  "root": "apps/gateway",
   "projects": {
     "authentication": {
       "type": "application",
@@ -53,15 +53,6 @@
       "sourceRoot": "apps/gateway/src",
       "compilerOptions": {
         "tsConfigPath": "apps/gateway/tsconfig.app.json"
-      }
-    },
-    "nestjs-backend-challenge": {
-      "type": "application",
-      "root": "apps/nestjs-backend-challenge",
-      "entryFile": "main",
-      "sourceRoot": "apps/nestjs-backend-challenge/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/nestjs-backend-challenge/tsconfig.app.json"
       }
     }
   }
