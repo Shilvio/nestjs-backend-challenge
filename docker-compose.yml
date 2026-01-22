@@ -1,25 +1,43 @@
+version: '3.8'
+
 services:
-  # Il Database
+  # Db service config
   mongo:
     image: mongo:6.0
-    container_name: challenge_mongo
-    restart: always
     ports:
       - '27017:27017'
     volumes:
       - mongo_data:/data/db
 
-  # L'interfaccia Grafica Web (per il video)
-  mongo-express:
-    image: mongo-express
-    container_name: challenge_express
-    restart: always
-    ports:
-      - '8081:8081'
-    environment:
-      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+  # Authentication microservice config
+  authentication:
+    build:
+      context: .
+      dockerfile: Dockerfile.authentication
     depends_on:
       - mongo
+    environment:
+      MONGO_URI: mongodb://mongo:27017/challenge
+      AUTH_HOST: authentication
+      AUTH_PORT: 3001
+      PORT: 3001
+    ports:
+      - '3001:3001'
+
+  # 3. Gateway API config
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
+    depends_on:
+      - authentication
+    environment:
+      MONGO_URI: mongodb://mongo:27017/challenge
+      AUTH_HOST: authentication
+      AUTH_PORT: 3001
+      PORT: 3000
+    ports:
+      - '3000:3000'
 
 volumes:
   mongo_data:
