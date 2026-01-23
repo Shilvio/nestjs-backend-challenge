@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 
+// define JWT strategy using passport-jwt to extract and verify the token
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(configService: ConfigService) {
@@ -13,6 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  // validates JWT token
   async validate(payload: any) {
     return { userId: payload.sub, email: payload.email };
   }

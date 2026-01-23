@@ -8,6 +8,7 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from './health/health.controller';
 import { CoreModule } from '@app/core';
 
+// app module of the gateway configurring throttling, caching, and enabling the healthcheck solution for the gateway API
 @Module({
   imports: [
     CommonConfigModule,

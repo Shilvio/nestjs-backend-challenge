@@ -7,21 +7,28 @@ import { map } from 'rxjs';
 import { plainToInstance } from 'class-transformer';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
+// handle exposed api routes
+
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
-  register(@Body() createUserDto: CreateUserDto) {
-    return this.authService.registerUser(createUserDto);
-  }
+ @Post('register')
+register(@Body() createUserDto: CreateUserDto) {
+  return this.authService.registerUser(createUserDto).pipe(
+    map((user) => 
+      plainToInstance(UserRto, user, { excludeExtraneousValues: true })
+    )
+  );
+}
 
 
   @Post('login')
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
-
+  
+  // use time base cache and JWT auth
   @UseInterceptors(CacheInterceptor)
   @UseGuards(JwtAuthGuard)
   @Get('users')

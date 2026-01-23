@@ -3,6 +3,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+
+// encapsulating the auth logic in a module for improving scalability and mantaining a clean arrchitecture
 @Module({
   imports: [
     ClientsModule.registerAsync([

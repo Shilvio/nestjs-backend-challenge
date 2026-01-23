@@ -3,6 +3,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UsersService } from './user.service';
 import { CreateUserDto, LoginDto } from '@app/common';
 
+// controller to handle the operation ecieved via TCP
 @Controller()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

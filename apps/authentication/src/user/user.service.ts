@@ -1,19 +1,28 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Injectable, UnauthorizedException,ConflictException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from './user.schema';
 import { CreateUserDto, LoginDto } from '@app/common';
 import * as bcrypt from 'bcrypt';
+import { UsersRepository } from './user.repository';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
+    // repository injection
+    private readonly usersRepository: UsersRepository,
     private jwtService: JwtService
   ) {}
 
   async createUser(data: CreateUserDto) {
+
+    const existingUser = await this.usersRepository.findOne({ email: data.email });
+    
+    if (existingUser) {
+        throw new RpcException({
+            statusCode: 409,
+            message: 'Email already registered'
+        });
+    }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(data.password, salt);
 
@@ -22,20 +31,23 @@ export class UsersService {
       password: hashedPassword,
     };
 
-    return this.userModel.create(userToSave);
+    // call repository and create a new user
+    return this.usersRepository.create(userToSave);
   }
 
   async validateUser(data: LoginDto) {
-    const user = await this.userModel.findOne({ email: data.email });
+    // call repository and find a user
+    const user = await this.usersRepository.findOne({ email: data.email });
 
     if (!user) {
-      throw new UnauthorizedException('Credenziali errate');
+      throw new UnauthorizedException('Bad credentials');
     }
 
+    // proceeds with the uiser authentication
     const isMatch = await bcrypt.compare(data.password, user.password);
 
     if (!isMatch) {
-      throw new UnauthorizedException('Credenziali errate');
+      throw new UnauthorizedException('Bad credentials');
     }
     
     const payload = { email: user.email, sub: user._id };
@@ -45,6 +57,6 @@ export class UsersService {
   }
 
   async getUsers() {
-    return this.userModel.find().select('-password').exec();
+    return this.usersRepository.find();
   }
 }

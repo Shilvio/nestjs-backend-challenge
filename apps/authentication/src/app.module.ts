@@ -6,7 +6,9 @@ import { User, UserSchema } from './user/user.schema';
 import { UsersController } from './user/user.controller';
 import { UsersService } from './user/user.service';
 import { CommonConfigModule } from '@app/config';
+import { UsersRepository } from './user/user.repository';
 
+// app module of the authentication microservice
 @Module({
   imports: [
     CommonConfigModule,
@@ -17,6 +19,7 @@ import { CommonConfigModule } from '@app/config';
         inject: [ConfigService],
     }),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    // configure the JWT module
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -27,6 +30,6 @@ import { CommonConfigModule } from '@app/config';
     }),
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  providers: [UsersService,UsersRepository],
 })
 export class AppModule {}

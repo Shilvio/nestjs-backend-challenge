@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheck, HealthCheckService, MemoryHealthIndicator } from '@nestjs/terminus';
 
+// simple healthcheck using terminus
 @Controller('health')
 export class HealthController {
   constructor(

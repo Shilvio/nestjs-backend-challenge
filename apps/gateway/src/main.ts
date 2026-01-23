@@ -10,6 +10,7 @@ async function bootstrap() {
   
   const port = configService.get<number>('PORT') || 3000;
 
+  // setup the the Swagger Documentation and enable the use of the JWT authentication in it
   const config = new DocumentBuilder()
     .setTitle('Backend Challenge API')
     .setDescription('The Gateway API description')
