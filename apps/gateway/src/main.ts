@@ -1,9 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  
+  const configService = app.get(ConfigService);
+  
+  const port = configService.get<number>('PORT') || 3000;
 
   const config = new DocumentBuilder()
     .setTitle('Backend Challenge API')
@@ -15,8 +20,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
-  console.log('Gateway is listening on HTTP port 3000');
-  console.log('Swagger is available at: http://localhost:3000/api');
+  await app.listen(port);
+  
+  console.log(`Gateway is listening on HTTP port ${port}`);
+  console.log(`Swagger is available at: http://localhost:${port}/api`);
 }
 bootstrap();

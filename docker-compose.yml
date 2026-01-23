@@ -17,11 +17,10 @@ services:
     environment:
       MONGO_URI: mongodb://mongo:27017/challenge
       AUTH_HOST: authentication
-      AUTH_PORT: 3001
-      PORT: 3001
+      PORT: ${AUTH_PORT}
       JWT_SECRET: ${JWT_SECRET}
     ports:
-      - '3001:3001'
+      - "${AUTH_PORT}:${AUTH_PORT}"
 
   # 3. Gateway API config
   gateway:
@@ -33,11 +32,11 @@ services:
     environment:
       MONGO_URI: mongodb://mongo:27017/challenge
       AUTH_HOST: authentication
-      AUTH_PORT: 3001
-      PORT: 3000
+      AUTH_PORT: ${AUTH_PORT}
+      PORT: ${GATEWAY_PORT}
       JWT_SECRET: ${JWT_SECRET}
     ports:
-      - '3000:3000'
+      - "${GATEWAY_PORT}:${GATEWAY_PORT}"
 
 volumes:
   mongo_data:
