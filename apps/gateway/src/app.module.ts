@@ -4,6 +4,8 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { CommonConfigModule } from '@app/config';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { TerminusModule } from '@nestjs/terminus';
+import { HealthController } from './health/health.controller';
 
 @Module({
   imports: [
@@ -20,8 +22,9 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
       max: 100,
     }),
     AuthModule,
+    TerminusModule,
   ],
-  controllers: [],
+  controllers: [HealthController],
   providers: [
     {
       provide: APP_GUARD,
