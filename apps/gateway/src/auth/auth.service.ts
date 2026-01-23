@@ -23,11 +23,18 @@ export class AuthService {
   }
 
   login(loginDto: LoginDto) {
-    return this.authClient.send('login_user', loginDto).pipe(
-       catchError((err) => throwError(() => new HttpException(err.message, err.status || 500)))
-    );
-  }
+  return this.authClient.send('login_user', loginDto).pipe(
+    catchError((err) => {
+      
+      const statusCode = err?.statusCode || err?.status || HttpStatus.INTERNAL_SERVER_ERROR;
+      const message = err?.message || 'Errore interno';
 
+      return throwError(
+        () => new HttpException({ statusCode, message }, statusCode),
+      );
+    }),
+  );
+}
   getUsers() {
     return this.authClient.send('get_users', {});
   }

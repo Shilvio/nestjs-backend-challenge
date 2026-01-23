@@ -22,7 +22,7 @@ services:
     ports:
       - "${AUTH_PORT}:${AUTH_PORT}"
 
-  # 3. Gateway API config
+  # Gateway API config
   gateway:
     build:
       context: .

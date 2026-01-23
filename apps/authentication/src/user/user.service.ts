@@ -40,7 +40,10 @@ export class UsersService {
     const user = await this.usersRepository.findOne({ email: data.email });
 
     if (!user) {
-      throw new UnauthorizedException('Bad credentials');
+      throw new RpcException({
+        statusCode: 401,
+        message: 'Credentials are not valid'
+      });
     }
 
     // proceeds with the uiser authentication
