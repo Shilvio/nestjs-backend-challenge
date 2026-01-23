@@ -12,6 +12,7 @@ import * as Joi from 'joi';
         AUTH_HOST: Joi.string().required(),
         AUTH_PORT: Joi.number().required(),
         PORT: Joi.number().default(3000),
+        
       }),
     }),
   ],

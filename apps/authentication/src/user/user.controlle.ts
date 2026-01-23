@@ -1,10 +1,10 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { UsersService } from './users/users.service';
+import { UsersService } from './user.service';
 import { CreateUserDto } from '@app/common';
 
 @Controller()
-export class AuthenticationController {
+export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @MessagePattern('create_user')
