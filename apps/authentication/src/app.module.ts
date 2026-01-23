@@ -1,24 +1,32 @@
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from './user/user.module';
-import { ConfigService } from '@nestjs/config';
+import { User, UserSchema } from './user/user.schema';
+import { UsersController } from './user/user.controller';
+import { UsersService } from './user/user.service';
 import { CommonConfigModule } from '@app/config';
-import { UsersController } from './user/user.controlle';
 
 @Module({
   imports: [
     CommonConfigModule,
-
     MongooseModule.forRootAsync({
+        useFactory: (configService: ConfigService) => ({
+            uri: configService.get<string>('MONGO_URI'),
+        }),
+        inject: [ConfigService],
+    }),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGO_URI'),
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: '1h' },
       }),
     }),
-
-    UsersModule,
   ],
   controllers: [UsersController],
-  providers: [],
+  providers: [UsersService],
 })
 export class AppModule {}

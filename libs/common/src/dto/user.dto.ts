@@ -23,3 +23,22 @@ export class CreateUserDto {
   @MinLength(6)
   password: string;
 }
+
+export class LoginDto {
+  @ApiProperty({
+    example: 'test@example.com',
+    description: 'The email of the user',
+  })
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @ApiProperty({
+    example: 'secret123',
+    description: 'he password of the user',
+    minLength: 6,
+  })
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+}
